@@ -1,3 +1,7 @@
+# Target Architecture Diagram
+
+![image](https://user-images.githubusercontent.com/67806691/130006985-2f6b4303-edb3-4344-8a7e-887066212f52.png)
+
 
 # Welcome to your CDK Python project!
 

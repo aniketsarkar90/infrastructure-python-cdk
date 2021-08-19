@@ -1,4 +1,5 @@
 from aws_cdk import core as cdk
+from aws_cdk import aws_ec2 as ec2
 
 # For consistency with other languages, `cdk` is the preferred import name for
 # the CDK's core module.  The following line also imports it as `core` for use
@@ -13,3 +14,6 @@ class InfrastructurePythonCdkStack(cdk.Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         # The code that defines your stack goes here
+
+        # create a vpc 
+        vpc = ec2.Vpc(self, 'PythonInfraVPC')

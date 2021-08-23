@@ -15,5 +15,14 @@ class InfrastructurePythonCdkStack(cdk.Stack):
 
         # The code that defines your stack goes here
 
-        # create a vpc 
-        vpc = ec2.Vpc(self, 'PythonInfraVPC')
+        # create a vpc         
+        # specify the cidr (255 ip's available)
+        # max 2 availability zone like the diagram
+        # subnet config - 1 private and 1 public
+        vpc = ec2.Vpc(self, 'PythonInfraVPC', 
+            cidr='10.1.0.0/16', 
+            max_azs=2,
+            subnet_configuration = [
+                {'cidrMask': 24, 'name': 'Web', 'subnetType': ec2.SubnetType.PUBLIC},
+                {'cidrMask': 24, 'name': 'Application', 'subnetType': ec2.SubnetType.PRIVATE}
+            ])

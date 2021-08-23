@@ -19,10 +19,13 @@ class InfrastructurePythonCdkStack(cdk.Stack):
         # specify the cidr (255 ip's available)
         # max 2 availability zone like the diagram
         # subnet config - 1 private and 1 public
+            # this will deply 2 set of public and private subnets in each availability zones 
+            # cdk will take care of all the nat provisioning (private route table pointing to nat gateway and) and routing of internet gateway (public subnet pointing to igw)
         vpc = ec2.Vpc(self, 'PythonInfraVPC', 
             cidr='10.1.0.0/16', 
             max_azs=2,
-            subnet_configuration = [
+            subnet_configuration = [ 
                 {'cidrMask': 24, 'name': 'Web', 'subnetType': ec2.SubnetType.PUBLIC},
                 {'cidrMask': 24, 'name': 'Application', 'subnetType': ec2.SubnetType.PRIVATE}
-            ])
+        ])
+

@@ -1,6 +1,7 @@
 from aws_cdk import core as cdk
 from aws_cdk import aws_ec2 as ec2
 from aws_cdk import aws_autoscaling as autoscaling
+from aws_cdk import aws_elasticloadbalancingv2 as elbv2
 # For consistency with other languages, `cdk` is the preferred import name for
 # the CDK's core module.  The following line also imports it as `core` for use
 # with examples from the CDK Developer's Guide, which are in the process of
@@ -52,4 +53,16 @@ class InfrastructurePythonCdkStack(cdk.Stack):
         )
             
             
-            # prepare the LB
+        # prepare the LB
+            # declaring a lb 
+            # internet facing = true tells the cdk that this will be placed across public subnets and not private subnets 
+        lb = elbv2.ApplicationLoadBalancer(self, "LB",
+            vpc=vpc,
+            internet_facing=True
+        )
+
+        # listening on port 80 & attaching the asg
+        # allowing traffic from any ip4,  #cdk will create sg 
+        listener = lb.add_listener("Listener", port=80)
+        listener.add_targets("Target", port=80, targets=[asg]) 
+        listener.connections.allow_default_port_from_any_ipv4("open to the world") 

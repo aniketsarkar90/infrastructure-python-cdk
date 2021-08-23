@@ -1,12 +1,10 @@
 from aws_cdk import core as cdk
 from aws_cdk import aws_ec2 as ec2
-
+from aws_cdk import aws_autoscaling as autoscaling
 # For consistency with other languages, `cdk` is the preferred import name for
 # the CDK's core module.  The following line also imports it as `core` for use
 # with examples from the CDK Developer's Guide, which are in the process of
 # being updated to use `cdk`.  You may delete this import if you don't need it.
-from aws_cdk import core
-
 
 class InfrastructurePythonCdkStack(cdk.Stack):
 
@@ -29,3 +27,29 @@ class InfrastructurePythonCdkStack(cdk.Stack):
                 {'cidrMask': 24, 'name': 'Application', 'subnetType': ec2.SubnetType.PRIVATE}
         ])
 
+        # adding LB and servers
+            # deploy web servers inside ASG & they are going to be in private subnets
+        asg = autoscaling.AutoScalingGroup(self, "ASG",
+            vpc=vpc,
+            instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.MICRO), # specify family - T2.Micro
+            machine_image=ec2.AmazonLinuxImage()
+        )
+
+        # adding some basic user data for all ec2's
+            # update on OS
+            # download and install apache web server
+            # create index.html file 
+            # start apache web server
+            # make sure the apache web server is running even if the server is rebooted
+        asg.add_user_data(
+            """
+            yum update -y
+            yum install httpd -y
+            echo 'Hello from CDK' > /var/www/html/index.html
+            service httpd start
+            chkconfig httpd on
+            """
+        )
+            
+            
+            # prepare the LB

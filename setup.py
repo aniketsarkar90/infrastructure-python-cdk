@@ -19,7 +19,7 @@ setuptools.setup(
     packages=setuptools.find_packages(where="infrastructure_python_cdk"),
 
     install_requires=[
-        "aws-cdk.core==1.144.0", "aws_cdk.aws_ec2", "aws_cdk.aws_autoscaling", "aws_cdk.aws_elasticloadbalancingv2"
+        "aws-cdk.core==1.186.1", "aws_cdk.aws_ec2", "aws_cdk.aws_autoscaling", "aws_cdk.aws_elasticloadbalancingv2"
     ],
 
     python_requires=">=3.6",
